@@ -166,50 +166,116 @@
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    let progress = 0;
+<script>
+  let progress = 0;
+  let taps = 0;
+  let fallInterval = null;
+  let idleTimeout = null;
 
-    const heart = document.getElementById("heart");
-    const fill = document.getElementById("fill");
-    const count = document.getElementById("count");
+  const heart = document.getElementById("heart");
+  const fill = document.getElementById("fill");
+  const count = document.getElementById("count");
 
-    const screen1 = document.getElementById("screen1");
-    const screen2 = document.getElementById("screen2");
-    const screen3 = document.getElementById("screen3");
+  const screen1 = document.getElementById("screen1");
+  const screen2 = document.getElementById("screen2");
+  const screen3 = document.getElementById("screen3");
 
-    const music = document.getElementById("music");
-    const nextBtn = document.getElementById("nextBtn");
+  const music = document.getElementById("music");
+  const nextBtn = document.getElementById("nextBtn");
+  const hintText = document.querySelector("#screen1 p");
 
-    function vibrate(ms = 20) {
-      if (navigator.vibrate) {
-        navigator.vibrate(ms);
+  const messages = [
+    "Keep going 💕",
+    "Don’t stop now 😏",
+    "Hearts need attention ❤️",
+    "Almost… maybe 😉",
+    "Worth it, promise 💖"
+  ];
+
+  function vibrate(pattern = 20) {
+    if (navigator.vibrate) navigator.vibrate(pattern);
+  }
+
+  function startFalling() {
+    if (fallInterval || progress <= 0) return;
+
+    hintText.textContent = "Hey… don’t stop 🥺";
+    vibrate(10);
+
+    fallInterval = setInterval(() => {
+      if (progress <= 0) {
+        clearInterval(fallInterval);
+        fallInterval = null;
+        return;
       }
+
+      progress = Math.max(progress - 1, 0);
+      fill.style.height = progress + "%";
+      count.textContent = progress;
+    }, 600);
+  }
+
+  function stopFalling() {
+    if (fallInterval) {
+      clearInterval(fallInterval);
+      fallInterval = null;
+    }
+  }
+
+  function resetIdleTimer() {
+    if (idleTimeout) clearTimeout(idleTimeout);
+    idleTimeout = setTimeout(startFalling, 1500);
+  }
+
+  heart.addEventListener("click", () => {
+    if (progress >= 100) return;
+
+    stopFalling();
+    resetIdleTimer();
+
+    taps++;
+
+    let increment = 3;
+
+    // 15% chance of teasing no-progress
+    if (Math.random() < 0.15) {
+      increment = 0;
+      hintText.textContent = "Hmm… again 😌";
+      vibrate(10);
+    } else {
+      hintText.textContent = messages[Math.floor(Math.random() * messages.length)];
     }
 
-    heart.addEventListener("click", () => {
-      if (progress < 100) {
-        progress += 10;
-        fill.style.height = progress + "%";
-        count.textContent = progress;
-        vibrate(15);
-      }
+    progress = Math.min(progress + increment, 100);
+    fill.style.height = progress + "%";
+    count.textContent = progress;
 
-      if (progress >= 100) {
-        vibrate([30, 50, 30]);
-        setTimeout(() => {
-          screen1.classList.remove("active");
-          screen2.classList.add("active");
-          music.play();
-        }, 400);
-      }
-    });
+    vibrate(15);
 
-    nextBtn.addEventListener("click", () => {
-      vibrate(30);
-      screen2.classList.remove("active");
-      screen3.classList.add("active");
-    });
-  </script>
+    if ([25, 50, 75].includes(progress)) {
+      vibrate([30, 40, 30]);
+    }
 
+    if (progress >= 100) {
+      stopFalling();
+      vibrate([50, 100, 50]);
+
+      setTimeout(() => {
+        screen1.classList.remove("active");
+        screen2.classList.add("active");
+        music.play();
+      }, 500);
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    vibrate(40);
+    screen2.classList.remove("active");
+    screen3.classList.add("active");
+  });
+
+  // Start idle timer initially
+  resetIdleTimer();
+</script>
 </body>
 </html>
