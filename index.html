@@ -200,19 +200,21 @@
     if (fallInterval || progress <= 0) return;
 
     hintText.textContent = "Hey… don’t stop 🥺";
-    vibrate(10);
+    vibrate(15);
 
     fallInterval = setInterval(() => {
       if (progress <= 0) {
         clearInterval(fallInterval);
         fallInterval = null;
+        hintText.textContent = "Okay… that hurt 😭";
+        vibrate([20, 50, 20]);
         return;
       }
 
-      progress = Math.max(progress - 1, 0);
+      progress = Math.max(progress - 5, 0);
       fill.style.height = progress + "%";
       count.textContent = progress;
-    }, 600);
+    }, 100);
   }
 
   function stopFalling() {
@@ -224,7 +226,7 @@
 
   function resetIdleTimer() {
     if (idleTimeout) clearTimeout(idleTimeout);
-    idleTimeout = setTimeout(startFalling, 500);
+    idleTimeout = setTimeout(startFalling, 1500);
   }
 
   heart.addEventListener("click", () => {
@@ -233,11 +235,9 @@
     stopFalling();
     resetIdleTimer();
 
-    taps++;
-
     let increment = 3;
 
-    // 15% chance of teasing no-progress
+    // Tease chance
     if (Math.random() < 0.15) {
       increment = 0;
       hintText.textContent = "Hmm… again 😌";
@@ -274,7 +274,6 @@
     screen3.classList.add("active");
   });
 
-  // Start idle timer initially
   resetIdleTimer();
 </script>
 </body>
