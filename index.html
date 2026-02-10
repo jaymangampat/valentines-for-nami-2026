@@ -149,15 +149,27 @@
     </div>
 
     <!-- Screen 3 -->
-    <div class="screen" id="screen3">
-      <h2>Breakfast date? 🍳☕</h2>
-      <p>
-        Let’s start Valentine’s Day with breakfast,<br>
-        good coffee, and you ❤️
-      </p>
+<div class="screen" id="screen3">
+  <h2>It’s official 💘</h2>
+  <p>
+    Breakfast date with you sounds perfect ☺️<br><br>
 
-      <div class="pulse">🥐</div>
-    </div>
+    📍 <strong>Burrow Cafe, Antipolo</strong><br>
+    ⏰ <strong>8:00 AM</strong><br><br>
+
+    Coffee, good food,<br>
+    and my favorite person ❤️<br><br>
+
+    <em>I’ll pick you up, Nami ❤️ See you there at 8 AM!</em>
+  </p>
+
+  <!-- Google Maps button -->
+  <a href="https://www.google.com/maps/search/?api=1&query=Burrow+Cafe+Antipolo" target="_blank">
+    <button class="choice-btn">View on Map 📍</button>
+  </a>
+
+  <div class="pulse">☀️☕🥐</div>
+</div>
 
   </div>
 
@@ -167,6 +179,33 @@
   </audio>
 
 <script>
+  body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sunrise effect */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at bottom, #ffe4c4, transparent 70%);
+  opacity: 0.3;
+  animation: sunrise 10s infinite alternate;
+  z-index: -1;
+}
+
+@keyframes sunrise {
+  0% { transform: translateY(20px); opacity: 0.2; }
+  100% { transform: translateY(0px); opacity: 0.35; }
+}
   let progress = 0;
   let taps = 0;
   let fallInterval = null;
