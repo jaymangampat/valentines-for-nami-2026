@@ -224,7 +224,7 @@
 
   function resetIdleTimer() {
     if (idleTimeout) clearTimeout(idleTimeout);
-    idleTimeout = setTimeout(startFalling, 1500);
+    idleTimeout = setTimeout(startFalling, 500);
   }
 
   heart.addEventListener("click", () => {
