@@ -14,13 +14,32 @@
     }
 
     body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sunrise effect */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at bottom, #ffe4c4, transparent 70%);
+  opacity: 0.3;
+  animation: sunrise 10s infinite alternate;
+  z-index: -1;
+}
+
+@keyframes sunrise {
+  0% { transform: translateY(20px); opacity: 0.2; }
+  100% { transform: translateY(0px); opacity: 0.35; }
+}
 
     .card {
       background: #fff;
@@ -179,33 +198,6 @@
   </audio>
 
 <script>
-  body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Sunrise effect */
-body::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle at bottom, #ffe4c4, transparent 70%);
-  opacity: 0.3;
-  animation: sunrise 10s infinite alternate;
-  z-index: -1;
-}
-
-@keyframes sunrise {
-  0% { transform: translateY(20px); opacity: 0.2; }
-  100% { transform: translateY(0px); opacity: 0.35; }
-}
   let progress = 0;
   let taps = 0;
   let fallInterval = null;
